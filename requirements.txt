@@ -1,0 +1,81 @@
+# ============================
+# Core LangChain Packages
+# ============================
+langchain
+langchain-core
+langchain-community
+langchain-google-genai
+langgraph
+
+# ============================
+# LLM Provider
+# ============================
+google-generativeai
+
+# ============================
+# Search Tool
+# ============================
+tavily-python
+
+# ============================
+# Web Scraping
+# ============================
+beautifulsoup4
+requests
+lxml
+
+# ============================
+# Environment Variables
+# ============================
+python-dotenv
+
+# ============================
+# Agent Utilities
+# ============================
+pydantic
+typing-extensions
+
+# ============================
+# Token Counting / Text Processing
+# ============================
+tiktoken
+
+# ============================
+# Data Handling
+# ============================
+pandas
+numpy
+
+# ============================
+# Async Support
+# ============================
+aiohttp
+
+# ============================
+# Logging and Visualization
+# ============================
+rich
+
+# ============================
+# Optional: LangSmith Tracing
+# ============================
+langsmith
+
+# ============================
+# Optional: Frontend (choose one)
+# ============================
+streamlit
+
+# OR if using API backend
+fastapi
+uvicorn
+
+# ============================
+# Optional: JSON Handling
+# ============================
+orjson
+
+# ============================
+# Optional: Retry Mechanism
+# ============================
+tenacity
