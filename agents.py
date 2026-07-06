@@ -11,20 +11,27 @@ load_dotenv()
 # Model setup
 model_name = os.getenv("MODEL_NAME", "gemini-2.5-flash")
 google_api_key = os.getenv("GOOGLE_API_KEY") or os.getenv("GEMINI_API_KEY")
-if not google_api_key:
-    raise RuntimeError("Set GOOGLE_API_KEY or GEMINI_API_KEY in your environment or .env file for Gemini.")
 
-llm = ChatGoogleGenerativeAI(
-    model=model_name,
-    temperature=0.2,
-    google_api_key=google_api_key,
-)
+# Initialize LLM (will raise error only when needed)
+llm = None
+
+def get_llm():
+    global llm
+    if llm is None:
+        if not google_api_key:
+            raise RuntimeError("Set GOOGLE_API_KEY or GEMINI_API_KEY in your environment or .env file for Gemini.")
+        llm = ChatGoogleGenerativeAI(
+            model=model_name,
+            temperature=0.2,
+            google_api_key=google_api_key,
+        )
+    return llm
 
 
 #1st agent
 def build_search_agent():
     return create_agent(
-        model = llm,
+        model = get_llm(),
         tools = [web_search]
     )
 
@@ -32,7 +39,7 @@ def build_search_agent():
 
 def build_reader_agent():
     return create_agent(
-        model=llm,
+        model=get_llm(),
         tools=[scrape_url]
     )
 
@@ -57,7 +64,8 @@ writer_prompt = ChatPromptTemplate.from_messages([
 
 ])
 
-writer_chain = writer_prompt | llm | StrOutputParser()
+def get_writer_chain():
+    return writer_prompt | get_llm() | StrOutputParser()
 
 #critic_chain
 
@@ -84,4 +92,6 @@ critic_prompt = ChatPromptTemplate.from_messages([
        One line verdict:
        ...""") ,
 ])
-critic_chain = critic_prompt | llm | StrOutputParser()
+
+def get_critic_chain():
+    return critic_prompt | get_llm() | StrOutputParser()

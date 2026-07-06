@@ -5,14 +5,25 @@ from tavily import TavilyClient
 import os
 from dotenv import load_dotenv
 from rich import print
+
 load_dotenv()
 
-tavily = TavilyClient(api_key=os.getenv("Tavily_API_KEY"))
+# Defer Tavily client initialization
+_tavily = None
+
+def get_tavily():
+    global _tavily
+    if _tavily is None:
+        api_key = os.getenv("Tavily_API_KEY")
+        if not api_key:
+            raise RuntimeError("Tavily_API_KEY not set in environment")
+        _tavily = TavilyClient(api_key=api_key)
+    return _tavily
 
 @tool
 def web_search(query : str) -> str:
     """Search the web for recent and reliable information on a topic . Returns Titles , URLs and snippets."""
-    results = tavily.search(query=query,max_results=5)
+    results = get_tavily().search(query=query,max_results=5)
 
     out = []
 
