@@ -66,10 +66,6 @@ langsmith
 # ============================
 streamlit
 
-# OR if using API backend
-fastapi
-uvicorn
-
 # ============================
 # Optional: JSON Handling
 # ============================
